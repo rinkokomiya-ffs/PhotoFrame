@@ -18,9 +18,9 @@ namespace PhotoFrameForm
         private IPhotoFileService service;
         static RepositoryFactory repo = new RepositoryFactory(PhotoFrame.Persistence.Type.Csv);
 
-        CreateAlbum createAlbum = new CreateAlbum(repo.AlbumRepository);
-        FindAlbum findAlbum = new FindAlbum(repo.AlbumRepository);
-        FindPhoto findPhoto = new FindPhoto(repo.PhotoRepository);
+        //CreateAlbum createAlbum = new CreateAlbum(repo.AlbumRepository);
+        //FindAlbum findAlbum = new FindAlbum(repo.AlbumRepository);
+        //FindPhoto findPhoto = new FindPhoto(repo.PhotoRepository);
 
         private List<Album> albumList;
         private List<Photo> viewPhotoList;
