@@ -19,8 +19,6 @@ namespace PhotoFrame.Domain.UseCase
         public CreateAlbum(IAlbumRepository repository)
         {
             this.repository = repository;
-            //RepositoryFactory repos = new RepositoryFactory(PhotoFrame.Persistence.Type.Csv);
-            //repository = repos.AlbumRepository;
         }
 
         public void Execute(string albumTitle)

@@ -14,11 +14,18 @@ namespace PhotoFrame.Application
     // TODO: 仮実装
     public class PhotoFrameApplication
     {
+        // 新規アルバム作成
         private readonly CreateAlbum createAlbum;
+
+        // アルバムの検索
+        private readonly FindAlbums findAlbums;
+
 
         public PhotoFrameApplication(IAlbumRepository albumRepository)
         {
             this.createAlbum = new CreateAlbum(albumRepository);
+            this.findAlbums = new FindAlbums(albumRepository);
+            //FindPhoto findPhoto = new FindPhoto(repo.PhotoRepository);
         }
 
         public void CreateAlbum(string albumTitle)
@@ -26,6 +33,13 @@ namespace PhotoFrame.Application
         {
             createAlbum.Execute(albumTitle);
             ///return createAlbum.Execute(albumTitle); 
+        }
+
+        public void FindAlbums(string albumTitle)
+        // public Task FindAlbum(string albumTitle)
+        {
+            //findAlbum.Execute(albumTitle);
+            ///return findAlbum.Execute(albumTitle); 
         }
     }
 }

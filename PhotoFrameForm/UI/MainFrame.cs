@@ -5,28 +5,33 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PhotoFrame.Persistence;
 using PhotoFrame.Domain.Model;
 using PhotoFrame.Domain.UseCase;
+using PhotoFrame.Application;
 
 namespace PhotoFrameForm
 {
     public partial class MainFrame : Form
     {
         private IPhotoFileService service;
-        static RepositoryFactory repo = new RepositoryFactory(PhotoFrame.Persistence.Type.Csv);
+        static RepositoryFactory repos = new RepositoryFactory(PhotoFrame.Persistence.Type.Csv);
 
-        //CreateAlbum createAlbum = new CreateAlbum(repo.AlbumRepository);
-        //FindAlbum findAlbum = new FindAlbum(repo.AlbumRepository);
-        //FindPhoto findPhoto = new FindPhoto(repo.PhotoRepository);
+        // アプリケーションのインスタンス化
+        PhotoFrameApplication application = new PhotoFrameApplication(repos.AlbumRepository);
 
         private List<Album> albumList;
         private List<Photo> viewPhotoList;
 
         // 選択されたアルバムとかファイル名もフィールドでいいかもしれないよ
         // あるいはクラス生成
+
+        // キャンセル用
+        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
 
         public MainFrame()
         {
@@ -39,7 +44,7 @@ namespace PhotoFrameForm
             // 要修正ここから
             //Func<IQueryable<Album>, IQueryable<Album>> func = arg => (arg != null) ? arg : null;
             Func<IQueryable<Album>, IQueryable<Album>> func = arg => (arg ?? null);
-            albumList = repo.AlbumRepository.Find(func).ToList();
+            albumList = repos.AlbumRepository.Find(func).ToList();
             // ここまで
 
             foreach (var p in albumList)
@@ -72,7 +77,7 @@ namespace PhotoFrameForm
             string createAlbumName = TargetAlbumName.Text;
 
             // 新規アルバム生成および保存
-            createAlbum.Execute(createAlbumName);
+            application.CreateAlbum(createAlbumName);
         }
 
         private void MainFrame_Load(object sender, EventArgs e)
@@ -87,61 +92,73 @@ namespace PhotoFrameForm
         /// <param name="e"></param>
         private void ShowPhotoFileListButton_Click(object sender, EventArgs e)
         {
-            // もしリストに既にコンテンツがあったら消去する
-            if(PhotoFileListView.Items.Count != 0)
+
+            var task = Task.Run(() =>
             {
-                PhotoFileListView.Items.Clear();
-                viewPhotoList.Clear();
-            }
-                
-            // 選択されたアルバム名を取得
-            //int index = ChoiceAlbumComboBox.SelectedIndex;
-            //string targetAlbum = ChoiceAlbumComboBox.Items[index].ToString();
 
-            // テキストボックスからアルバム名を取得
-            string targetAlbumName = TargetAlbumName.Text;
 
-            // アルバム名から生成されたアルバム情報をcsvファイルから取得する
-            Func<IQueryable<Album>, Album> func = FindAlbumName;
-            Album targetAlbum = repo.AlbumRepository.Find(func);
 
-            // 選択されたアルバムがあるかどうか確認
-            // 要実装
-
-            // 画像ファイルを取得してcsvファイルを生成する
-            // 生成するときにアルバムを登録しておく
-            var photoFileList = service.FindAllPhotoFilesFromDirectory(targetAlbumName);
-            foreach(var p in photoFileList)
-            {
-                var photo = Photo.CreateFromFile(p);
-                photo.IsAssignedTo(targetAlbum);
-                repo.PhotoRepository.Store(photo);
-            }
-
-            // csvに書きこまれたPhotoファイルリストを確認する
-            // 要修正ここから
-            Func<IQueryable<Photo>, IQueryable<Photo>> func2 = FindPhotosAlbumName;
-            viewPhotoList = repo.PhotoRepository.Find(func2).ToList();
-            // ここまで
-
-            if(viewPhotoList.ToList().Count == 0)
-            {
-                MessageBox.Show(TargetAlbumName.Text + "に画像ファイルはありません");
-            }
-
-            else
-            {
-                // リストボックスに表示
-                foreach (var p in viewPhotoList)
+                // もしリストに既にコンテンツがあったら消去する
+                if (PhotoFileListView.Items.Count != 0)
                 {
-                    string[] row = { p.File.FilePath, p.Album.Name, p.IsFavorite.ToString() };
-                    PhotoFileListView.Items.Add(new ListViewItem(row));
+                    PhotoFileListView.Items.Clear();
+                    viewPhotoList.Clear();
                 }
 
-                // 一番上のファイルをデフォルトで選択する
-                PhotoFileListView.Items[0].Selected = true;
-            }
+                // 選択されたアルバム名を取得
+                //int index = ChoiceAlbumComboBox.SelectedIndex;
+                //string targetAlbum = ChoiceAlbumComboBox.Items[index].ToString();
+
+                // テキストボックスからアルバム名を取得
+                string targetAlbumName = TargetAlbumName.Text;
+
+                // アルバム名から生成されたアルバム情報をcsvファイルから取得する
+                Func<IQueryable<Album>, Album> func = FindAlbumName;
+                Album targetAlbum = repos.AlbumRepository.Find(func);
+
+                // 選択されたアルバムがあるかどうか確認
+                // 要実装
+
+                // 画像ファイルを取得してcsvファイルを生成する
+                // 生成するときにアルバムを登録しておく
+                var photoFileList = service.FindAllPhotoFilesFromDirectory(targetAlbumName);
+                foreach (var p in photoFileList)
+                {
+                    var photo = Photo.CreateFromFile(p);
+                    photo.IsAssignedTo(targetAlbum);
+                    repos.PhotoRepository.Store(photo);
+                }
+
+                // csvに書きこまれたPhotoファイルリストを確認する
+                // 要修正ここから
+                Func<IQueryable<Photo>, IQueryable<Photo>> func2 = FindPhotosAlbumName;
+                viewPhotoList = repos.PhotoRepository.Find(func2).ToList();
+                // ここまで
+
+                if (viewPhotoList.ToList().Count == 0)
+                {
+                    MessageBox.Show(TargetAlbumName.Text + "に画像ファイルはありません");
+                }
+
+                else
+                {
+                    // リストボックスに表示
+                    foreach (var p in viewPhotoList)
+                    {
+                        string[] row = { p.File.FilePath, p.Album.Name, p.IsFavorite.ToString() };
+                        PhotoFileListView.Items.Add(new ListViewItem(row));
+                    }
+
+                    // 一番上のファイルをデフォルトで選択する
+                    PhotoFileListView.Items[0].Selected = true;
+                }
+
+
+                // キャンセル監視
+                cancellationTokenSource.Token.ThrowIfCancellationRequested();
+            }, cancellationTokenSource.Token);
         }
+
 
         private Album FindAlbumName(IQueryable<Album> arg)
         {
@@ -197,15 +214,15 @@ namespace PhotoFrameForm
 
             // ファイル名からPhotoを取得する
             Func<IQueryable<Photo>, Photo> func = FindPhotoName;
-            Photo targetPhoto = repo.PhotoRepository.Find(func);
+            Photo targetPhoto = repos.PhotoRepository.Find(func);
 
             // アルバム名から変更先のAlbumを取得する
             Func<IQueryable<Album>, Album> func2 = FindAlbumName;
-            Album targetAlbum = repo.AlbumRepository.Find(func2);
+            Album targetAlbum = repos.AlbumRepository.Find(func2);
 
             // 変更する
             targetPhoto.IsAssignedTo(targetAlbum);
-            repo.PhotoRepository.Store(targetPhoto);
+            repos.PhotoRepository.Store(targetPhoto);
 
             //updatelistrow(selectedphoto)
         }
@@ -226,6 +243,11 @@ namespace PhotoFrameForm
                 }
             }
             return null;
+        }
+
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            cancellationTokenSource.Cancel();
         }
 
         // csvから現状のアルバムを取得

@@ -7,11 +7,11 @@ using PhotoFrame.Domain.Model;
 
 namespace PhotoFrame.Domain.UseCase
 {
-    public class FindPhoto
+    public class FindPhotos
     {
         private readonly IPhotoRepository repository;
 
-        public FindPhoto(IPhotoRepository repository)
+        public FindPhotos(IPhotoRepository repository)
         {
             this.repository = repository;
         }

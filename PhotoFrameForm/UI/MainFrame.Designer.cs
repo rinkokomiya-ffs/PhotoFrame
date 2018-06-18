@@ -43,6 +43,7 @@
             this.RegisterFavButton = new System.Windows.Forms.Button();
             this.TargetAlbumName = new System.Windows.Forms.TextBox();
             this.CreateAlbumButton = new System.Windows.Forms.Button();
+            this.CancelButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -170,11 +171,22 @@
             this.CreateAlbumButton.UseVisualStyleBackColor = true;
             this.CreateAlbumButton.Click += new System.EventHandler(this.CreateAlbumButton_Click);
             // 
+            // CancelButton
+            // 
+            this.CancelButton.Location = new System.Drawing.Point(426, 13);
+            this.CancelButton.Name = "CancelButton";
+            this.CancelButton.Size = new System.Drawing.Size(75, 23);
+            this.CancelButton.TabIndex = 10;
+            this.CancelButton.Text = "キャンセル";
+            this.CancelButton.UseVisualStyleBackColor = true;
+            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            // 
             // MainFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(554, 379);
+            this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.CreateAlbumButton);
             this.Controls.Add(this.TargetAlbumName);
             this.Controls.Add(this.RegisterFavButton);
@@ -213,6 +225,7 @@
         private System.Windows.Forms.ColumnHeader IsFavolite;
         private System.Windows.Forms.TextBox TargetAlbumName;
         private System.Windows.Forms.Button CreateAlbumButton;
+        private System.Windows.Forms.Button CancelButton;
     }
 }
 

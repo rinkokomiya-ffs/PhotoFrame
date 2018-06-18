@@ -7,15 +7,13 @@ using PhotoFrame.Domain.Model;
 
 namespace PhotoFrame.Domain.UseCase
 {
-    public class FindAlbum
+    public class FindAlbums
     {
         private readonly IAlbumRepository repository;
 
-        public FindAlbum(IAlbumRepository repository)
+        public FindAlbums(IAlbumRepository repository)
         {
             this.repository = repository;
-            //RepositoryFactory repos = new RepositoryFactory(PhotoFrame.Persistence.Type.Csv);
-            //repository = repos.AlbumRepository;
         }
 
         public Album Execute(Func<IQueryable<Album>, Album> query)

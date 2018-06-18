@@ -79,6 +79,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PhotoFrame.Application\PhotoFrame.Application.csproj">
+      <Project>{1717472B-3B27-43F2-9895-C25F0C2D91DD}</Project>
+      <Name>PhotoFrame.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PhotoFrame.Domain.Model\PhotoFrame.Domain.Model.csproj">
       <Project>{B52F9308-D188-424D-AE76-5AA8180B6E13}</Project>
       <Name>PhotoFrame.Domain.Model</Name>
