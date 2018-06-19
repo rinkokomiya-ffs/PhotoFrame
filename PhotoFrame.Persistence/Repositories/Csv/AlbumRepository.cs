@@ -199,10 +199,10 @@ namespace PhotoFrame.Persistence.Csv
             }
 
             // ディレクトリ生成
-            //if (!Directory.Exists(Path.GetFullPath(entity.Name)))
-            //{
-            //    Directory.CreateDirectory(Path.GetFullPath(entity.Name));
-            //}
+            if (!Directory.Exists(Path.GetFullPath(entity.Name)))
+            {
+                Directory.CreateDirectory(Path.GetFullPath(entity.Name));
+            }
 
             return entity;
         }

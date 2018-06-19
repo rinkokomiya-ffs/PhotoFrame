@@ -28,11 +28,11 @@ namespace PhotoFrame.Application
             //FindPhoto findPhoto = new FindPhoto(repo.PhotoRepository);
         }
 
-        public void CreateAlbum(string albumTitle)
-        // public Task CreateAlbum(string albumTitle)
+        //public void CreateAlbum(string albumTitle)
+        public Task CreateAlbum(string albumTitle)
         {
-            createAlbum.Execute(albumTitle);
-            ///return createAlbum.Execute(albumTitle); 
+            //createAlbum.Execute(albumTitle);
+            return createAlbum.Execute(albumTitle); 
         }
 
         public void FindAlbums(string albumTitle)

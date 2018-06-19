@@ -21,12 +21,12 @@ namespace PhotoFrame.Domain.UseCase
             this.repository = repository;
         }
 
-        public void Execute(string albumTitle)
-        //public Task Execute(string albumTitle) => Task.Run(() =>
+        //public void Execute(string albumTitle)
+        public Task Execute(string albumTitle) => Task.Run(() =>
         {
             var album = Album.Create(albumTitle);
             repository.Store(album);
-        }
-        // });
+        //}
+         });
     }
 }

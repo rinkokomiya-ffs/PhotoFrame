@@ -40,6 +40,34 @@ namespace PhotoFrameForm
             // セットアップ
             service = new ServiceFactory().PhotoFileService;
 
+            
+            //var findPhoto.Execute(FindAlbumName);
+
+        }
+
+        private void MainFrame_Load(object sender, EventArgs e)
+        {
+            albumListRoad();
+        }
+
+        private async void CreateAlbumButton_Click(object sender, EventArgs e)
+        //private void CreateAlbumButton_Click(object sender, EventArgs e)
+        {
+            // テキストボックスからアルバム名を取得
+            string createAlbumName = TargetAlbumNameTextBox.Text;
+
+            // 新規アルバム生成および保存
+            // 非同期処理
+            await application.CreateAlbum(createAlbumName);
+            //application.CreateAlbum(createAlbumName);
+
+            // 再読み込みする
+            albumListRoad();
+
+        }
+
+        private void albumListRoad()
+        {
             // AlbumのCsvデータ取得（全アルバムリスト）
             // 要修正ここから
             //Func<IQueryable<Album>, IQueryable<Album>> func = arg => (arg != null) ? arg : null;
@@ -53,38 +81,9 @@ namespace PhotoFrameForm
             }
 
             ChoiceAlbumComboBox.SelectedIndex = 0;
-            //var findPhoto.Execute(FindAlbumName);
-
         }
 
-        /// <summary>
-        /// 全アルバムリストを取得
-        /// </summary>
-        /// <param name="arg">全アルバムリスト</param>
-        /// <returns>全アルバムリスト</returns>
-        //private IQueryable<Album> FindAllAlbum(IQueryable<Album> arg)
-        //{
-        //    if(arg == null)
-        //        return null;
-        //    else
-        //        return arg;
-        //}
         
-
-        private void CreateAlbumButton_Click(object sender, EventArgs e)
-        {
-            // テキストボックスからアルバム名を取得
-            string createAlbumName = TargetAlbumName.Text;
-
-            // 新規アルバム生成および保存
-            application.CreateAlbum(createAlbumName);
-        }
-
-        private void MainFrame_Load(object sender, EventArgs e)
-        {
-
-        }
-
         /// <summary>
         /// アルバム名で画像ファイルを検索
         /// </summary>
@@ -110,7 +109,7 @@ namespace PhotoFrameForm
                 //string targetAlbum = ChoiceAlbumComboBox.Items[index].ToString();
 
                 // テキストボックスからアルバム名を取得
-                string targetAlbumName = TargetAlbumName.Text;
+                string targetAlbumName = TargetAlbumNameTextBox.Text;
 
                 // アルバム名から生成されたアルバム情報をcsvファイルから取得する
                 Func<IQueryable<Album>, Album> func = FindAlbumName;
@@ -137,7 +136,7 @@ namespace PhotoFrameForm
 
                 if (viewPhotoList.ToList().Count == 0)
                 {
-                    MessageBox.Show(TargetAlbumName.Text + "に画像ファイルはありません");
+                    MessageBox.Show(TargetAlbumNameTextBox.Text + "に画像ファイルはありません");
                 }
 
                 else
@@ -162,7 +161,7 @@ namespace PhotoFrameForm
 
         private Album FindAlbumName(IQueryable<Album> arg)
         {
-            string targetAlbumName = TargetAlbumName.Text;
+            string targetAlbumName = TargetAlbumNameTextBox.Text;
             if (arg == null)
                 return null;
             else
@@ -183,7 +182,7 @@ namespace PhotoFrameForm
             if (arg == null)
                 return null;
 
-            string targetAlbumName = TargetAlbumName.Text;
+            string targetAlbumName = TargetAlbumNameTextBox.Text;
 
             // 検索対象ファイルリスト
             List<Photo> photoFiles = new List<Photo>();
