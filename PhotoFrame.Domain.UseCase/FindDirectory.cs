@@ -23,19 +23,22 @@ namespace PhotoFrame.Domain.UseCase
             service = new ServiceFactory().PhotoFileService;
         }
 
-        public IEnumerable<Photo> Execute(string directory)
+        public async Task<IEnumerable<Photo>> Execute(string directory)
         {
             // 画像ファイルリスト生成
             var photoFileList = service.FindAllPhotoFilesFromDirectory(directory);
             List<Photo> photos = new List<Photo>();
 
-            // 既にcsvに存在するかどうかも調べたほうがよい
+            // ファイルパスからFindをして、既にcsvに存在するかどうかも調べたほうがよい？
 
             // フォトデータ生成
             foreach (var p in photoFileList)
             {
                 var photo = Photo.CreateFromFile(p);
-                photoRepository.Store(photo);
+                await Task.Run(() =>
+                {
+                    photoRepository.Store(photo);
+                });
                 photos.Add(photo);
             }
             return photos;

@@ -45,12 +45,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.ShowDirectoryFileListButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.SearchDirectorytextBox = new System.Windows.Forms.TextBox();
-            this.ShowDirectoryFileListButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -67,7 +67,7 @@
             // 
             // ShowAlbumPhotoFileListButton
             // 
-            this.ShowAlbumPhotoFileListButton.Location = new System.Drawing.Point(338, 36);
+            this.ShowAlbumPhotoFileListButton.Location = new System.Drawing.Point(337, 36);
             this.ShowAlbumPhotoFileListButton.Name = "ShowAlbumPhotoFileListButton";
             this.ShowAlbumPhotoFileListButton.Size = new System.Drawing.Size(75, 23);
             this.ShowAlbumPhotoFileListButton.TabIndex = 2;
@@ -143,12 +143,12 @@
             // 
             this.TargetAlbumNameTextBox.Location = new System.Drawing.Point(107, 69);
             this.TargetAlbumNameTextBox.Name = "TargetAlbumNameTextBox";
-            this.TargetAlbumNameTextBox.Size = new System.Drawing.Size(225, 19);
+            this.TargetAlbumNameTextBox.Size = new System.Drawing.Size(224, 19);
             this.TargetAlbumNameTextBox.TabIndex = 8;
             // 
             // CreateAlbumButton
             // 
-            this.CreateAlbumButton.Location = new System.Drawing.Point(338, 69);
+            this.CreateAlbumButton.Location = new System.Drawing.Point(337, 69);
             this.CreateAlbumButton.Name = "CreateAlbumButton";
             this.CreateAlbumButton.Size = new System.Drawing.Size(79, 23);
             this.CreateAlbumButton.TabIndex = 9;
@@ -170,7 +170,7 @@
             // 
             this.SearchAlbumTextBox.Location = new System.Drawing.Point(107, 36);
             this.SearchAlbumTextBox.Name = "SearchAlbumTextBox";
-            this.SearchAlbumTextBox.Size = new System.Drawing.Size(225, 19);
+            this.SearchAlbumTextBox.Size = new System.Drawing.Size(224, 19);
             this.SearchAlbumTextBox.TabIndex = 11;
             // 
             // label2
@@ -208,6 +208,15 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(343, 76);
             this.tableLayoutPanel2.TabIndex = 15;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 38);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(66, 12);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "スライドショー";
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.tableLayoutPanel2);
@@ -219,21 +228,12 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "選択アルバムに対する処理";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 38);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(66, 12);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "スライドショー";
-            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.04478F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 68.95522F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 157F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 158F));
             this.tableLayoutPanel1.Controls.Add(this.ShowDirectoryFileListButton, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.CreateAlbumButton, 2, 2);
@@ -252,6 +252,16 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(493, 100);
             this.tableLayoutPanel1.TabIndex = 17;
             // 
+            // ShowDirectoryFileListButton
+            // 
+            this.ShowDirectoryFileListButton.Location = new System.Drawing.Point(337, 3);
+            this.ShowDirectoryFileListButton.Name = "ShowDirectoryFileListButton";
+            this.ShowDirectoryFileListButton.Size = new System.Drawing.Size(75, 23);
+            this.ShowDirectoryFileListButton.TabIndex = 15;
+            this.ShowDirectoryFileListButton.Text = "リスト表示";
+            this.ShowDirectoryFileListButton.UseVisualStyleBackColor = true;
+            this.ShowDirectoryFileListButton.Click += new System.EventHandler(this.ShowDirectoryFileListButton_Click);
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -265,19 +275,9 @@
             // 
             this.SearchDirectorytextBox.Location = new System.Drawing.Point(107, 3);
             this.SearchDirectorytextBox.Name = "SearchDirectorytextBox";
-            this.SearchDirectorytextBox.Size = new System.Drawing.Size(225, 19);
+            this.SearchDirectorytextBox.Size = new System.Drawing.Size(224, 19);
             this.SearchDirectorytextBox.TabIndex = 14;
             this.SearchDirectorytextBox.Text = "だみーだよ";
-            // 
-            // ShowDirectoryFileListButton
-            // 
-            this.ShowDirectoryFileListButton.Location = new System.Drawing.Point(338, 3);
-            this.ShowDirectoryFileListButton.Name = "ShowDirectoryFileListButton";
-            this.ShowDirectoryFileListButton.Size = new System.Drawing.Size(75, 23);
-            this.ShowDirectoryFileListButton.TabIndex = 15;
-            this.ShowDirectoryFileListButton.Text = "リスト表示";
-            this.ShowDirectoryFileListButton.UseVisualStyleBackColor = true;
-            this.ShowDirectoryFileListButton.Click += new System.EventHandler(this.ShowDirectoryFileListButton_Click);
             // 
             // MainFrame
             // 

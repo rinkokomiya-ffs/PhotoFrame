@@ -32,24 +32,22 @@ namespace PhotoFrame.Application
             //FindPhoto findPhoto = new FindPhoto(repo.PhotoRepository);
         }
 
-        //public void CreateAlbum(string albumTitle)
         public Task CreateAlbum(string albumTitle)
         {
-            //createAlbum.Execute(albumTitle);
             return createAlbum.Execute(albumTitle); 
         }
 
-        public IEnumerable<Photo> FindDirectory(string directory)
-        // public Task FindDirectory(string directory)
+        //public IEnumerable<Photo> FindDirectory(string directory)
+        public Task<IEnumerable<Photo>> FindDirectory(string directory)
         {
             return findDirectory.Execute(directory);
             ///return findDirectory.Execute(directory);
         }
 
-        public void FindAlbums(string albumTitle)
-        // public Task FindAlbum(string albumTitle)
+        public IEnumerable<Album> FindAlbums(string albumTitle)
+        //public Task<IEnumerable<Album>> FindAlbum(string albumTitle)
         {
-            //findAlbum.Execute(albumTitle);
+            return findAlbums.Execute(albumTitle);
             ///return findAlbum.Execute(albumTitle); 
         }
 
