@@ -38,8 +38,8 @@ namespace PhotoFrame.Persistence
                     //if (System.IO.Path.GetExtension(s) == "*.jpg")
                     {
                         //fileにフルパスを追加し、ファイルをリストに追加しましょう
-                        //File file = new File(System.IO.Path.GetFullPath(s));
-                        File file = new File(System.IO.Path.GetFileName(s));
+                        File file = new File(System.IO.Path.GetFullPath(s));
+                        //File file = new File(System.IO.Path.GetFileName(s));
                         if (file.IsPhoto == true)
                         {
                             lists.Add(file);

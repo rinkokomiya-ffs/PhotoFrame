@@ -8,26 +8,29 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PhotoFrame.Persistence;
-using PhotoFrame.Domain.Model;
-using PhotoFrame.Domain.UseCase;
 using PhotoFrame.Application;
+using PhotoFrame.Domain.Model;
+
+// 以下は必ず消す
+using PhotoFrame.Persistence;
+
 
 namespace PhotoFrameForm
 {
     public partial class MainFrame : Form
     {
-        private IPhotoFileService service;
         static RepositoryFactory repos = new RepositoryFactory(PhotoFrame.Persistence.Type.Csv);
 
         // アプリケーションのインスタンス化
-        PhotoFrameApplication application = new PhotoFrameApplication(repos.AlbumRepository);
+        PhotoFrameApplication application = new PhotoFrameApplication(repos.AlbumRepository, repos.PhotoRepository);
 
         private List<Album> albumList;
         private List<Photo> viewPhotoList;
 
         // 選択されたアルバムとかファイル名もフィールドでいいかもしれないよ
         // あるいはクラス生成
+
+        private readonly IPhotoFileService service;
 
         // キャンセル用
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -36,37 +39,17 @@ namespace PhotoFrameForm
         public MainFrame()
         {
             InitializeComponent();
-
-            // セットアップ
+            // 後で消す
             service = new ServiceFactory().PhotoFileService;
-
-            
-            //var findPhoto.Execute(FindAlbumName);
 
         }
 
         private void MainFrame_Load(object sender, EventArgs e)
         {
-            albumListRoad();
+            AlbumListLoad();
         }
 
-        private async void CreateAlbumButton_Click(object sender, EventArgs e)
-        //private void CreateAlbumButton_Click(object sender, EventArgs e)
-        {
-            // テキストボックスからアルバム名を取得
-            string createAlbumName = TargetAlbumNameTextBox.Text;
-
-            // 新規アルバム生成および保存
-            // 非同期処理
-            await application.CreateAlbum(createAlbumName);
-            //application.CreateAlbum(createAlbumName);
-
-            // 再読み込みする
-            albumListRoad();
-
-        }
-
-        private void albumListRoad()
+        private void AlbumListLoad()
         {
             // AlbumのCsvデータ取得（全アルバムリスト）
             // 要修正ここから
@@ -83,7 +66,83 @@ namespace PhotoFrameForm
             ChoiceAlbumComboBox.SelectedIndex = 0;
         }
 
-        
+        /// <summary>
+        /// 新規アルバム作成
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void CreateAlbumButton_Click(object sender, EventArgs e)
+        //private void CreateAlbumButton_Click(object sender, EventArgs e)
+        {
+            // テキストボックスからアルバム名を取得
+            string createAlbumName = TargetAlbumNameTextBox.Text;
+
+            // 新規アルバム生成および保存
+            // 非同期処理
+            await application.CreateAlbum(createAlbumName);
+            //application.CreateAlbum(createAlbumName);
+
+            // 再読み込みする
+            AlbumListLoad();
+        }
+
+        /// <summary>
+        /// ディレクトリ名で画像ファイルを検索
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowDirectoryFileListButton_Click(object sender, EventArgs e)
+        {
+            // ダイアログを開く
+            // FolderBrowserDialogクラスのインスタンスを作成
+            FolderBrowserDialog fbd = new FolderBrowserDialog
+            {
+                //上部に表示する説明テキストを指定する
+                Description = "フォルダを指定してください。",
+
+                //最初に選択するフォルダを指定する
+                SelectedPath = @"C:\",
+            };
+
+            //ダイアログで決定ボタンを選択される
+            if (fbd.ShowDialog(this) == DialogResult.OK)
+            {
+                // フォルダパスから画像ファイルを取得
+                var list = application.FindDirectory(fbd.SelectedPath);
+
+                // 何も含まれていない場合
+                if (list.ToList().Count == 0)
+                {
+                    MessageBox.Show("指定したフォルダに画像ファイルはありません");
+                }
+                else
+                {
+                    // リストボックスに表示
+                    foreach (var p in list)
+                    {
+                        string albumName = p.Album?.Name ?? "";
+                        string favorite;
+                        
+                        if(p.IsFavorite == true)
+                        {
+                            favorite = "*";
+                        }
+                        else
+                        {
+                            favorite = "";
+                        }
+                        
+                        string[] row = { p.File.FilePath, albumName, favorite};
+                        PhotoFileListView.Items.Add(new ListViewItem(row));
+                    }
+
+                    // 一番上のファイルをデフォルトで選択する
+                    PhotoFileListView.Items[0].Selected = true;
+                }
+            }
+        }
+
+
         /// <summary>
         /// アルバム名で画像ファイルを検索
         /// </summary>
@@ -248,6 +307,8 @@ namespace PhotoFrameForm
         {
             cancellationTokenSource.Cancel();
         }
+
+        
 
         // csvから現状のアルバムを取得
         // アルバム生成でフォルダを作るのは手動でもOK

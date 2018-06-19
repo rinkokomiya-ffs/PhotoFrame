@@ -17,13 +17,17 @@ namespace PhotoFrame.Application
         // 新規アルバム作成
         private readonly CreateAlbum createAlbum;
 
+        // フォルダから画像ファイル検索
+        private readonly FindDirectory findDirectory;
+
         // アルバムの検索
         private readonly FindAlbums findAlbums;
 
 
-        public PhotoFrameApplication(IAlbumRepository albumRepository)
+        public PhotoFrameApplication(IAlbumRepository albumRepository, IPhotoRepository photoRepository)
         {
             this.createAlbum = new CreateAlbum(albumRepository);
+            this.findDirectory = new FindDirectory(albumRepository, photoRepository);
             this.findAlbums = new FindAlbums(albumRepository);
             //FindPhoto findPhoto = new FindPhoto(repo.PhotoRepository);
         }
@@ -35,11 +39,20 @@ namespace PhotoFrame.Application
             return createAlbum.Execute(albumTitle); 
         }
 
+        public IEnumerable<Photo> FindDirectory(string directory)
+        // public Task FindDirectory(string directory)
+        {
+            return findDirectory.Execute(directory);
+            ///return findDirectory.Execute(directory);
+        }
+
         public void FindAlbums(string albumTitle)
         // public Task FindAlbum(string albumTitle)
         {
             //findAlbum.Execute(albumTitle);
             ///return findAlbum.Execute(albumTitle); 
         }
+
+        
     }
 }

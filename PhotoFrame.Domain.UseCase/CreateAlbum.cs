@@ -24,6 +24,7 @@ namespace PhotoFrame.Domain.UseCase
         //public void Execute(string albumTitle)
         public Task Execute(string albumTitle) => Task.Run(() =>
         {
+            // 時間かかる処理
             var album = Album.Create(albumTitle);
             repository.Store(album);
         //}

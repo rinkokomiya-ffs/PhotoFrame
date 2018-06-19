@@ -23,17 +23,9 @@ namespace PhotoFrame.Persistence.Csv
             this.CsvFilePath = $"{databaseName}_Album.csv"; // $"{...}" : 文字列展開
         }
 
-        public bool Exists(Album entity)
-        {
-            // TODO: ファイルIO講座以降で実装可能
-            throw new NotImplementedException();
-        }
+        public bool Exists(Album entity) => ExistsBy(entity.Id);
 
-        public bool ExistsBy(string id)
-        {
-            // TODO: ファイルIO講座以降で実装可能
-            throw new NotImplementedException();
-        }
+        public bool ExistsBy(string id) => FindBy(id) != null;
 
         public IEnumerable<Album> Find(Func<IQueryable<Album>, IQueryable<Album>> query)
         {
@@ -130,7 +122,6 @@ namespace PhotoFrame.Persistence.Csv
                 return null;
             }
 
-            // throw new NotImplementedException();
         }
 
         public Album Store(Album entity)

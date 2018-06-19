@@ -267,6 +267,7 @@
             this.SearchDirectorytextBox.Name = "SearchDirectorytextBox";
             this.SearchDirectorytextBox.Size = new System.Drawing.Size(225, 19);
             this.SearchDirectorytextBox.TabIndex = 14;
+            this.SearchDirectorytextBox.Text = "だみーだよ";
             // 
             // ShowDirectoryFileListButton
             // 
@@ -276,6 +277,7 @@
             this.ShowDirectoryFileListButton.TabIndex = 15;
             this.ShowDirectoryFileListButton.Text = "リスト表示";
             this.ShowDirectoryFileListButton.UseVisualStyleBackColor = true;
+            this.ShowDirectoryFileListButton.Click += new System.EventHandler(this.ShowDirectoryFileListButton_Click);
             // 
             // MainFrame
             // 
