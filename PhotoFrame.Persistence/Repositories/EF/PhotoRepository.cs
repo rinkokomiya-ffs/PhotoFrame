@@ -43,6 +43,27 @@ namespace PhotoFrame.Persistence.EF
         }
 
         /// <summary>
+        /// 全フォトリストの生成
+        /// </summary>
+        /// <returns></returns>
+        private IQueryable<Photo> FindAll()
+        {
+            List<Photo> Photos = new List<Photo>();
+
+            using (Domain.Model.EF.PhotoRepositoryEntities entities = new Domain.Model.EF.PhotoRepositoryEntities())
+            {
+                var entries = entities.M_PHOTO.Select(e => e);
+                foreach (var p in entries)
+                {
+                    Photos.Add(new Photo(p.Id.ToString(), new File(p.FilePath), p.IsFavorite, p.AlbumId.ToString(), albumRepository.FindBy(p.AlbumId.ToString())));
+
+                }
+            }
+
+            return Photos.AsQueryable();
+        }
+
+        /// <summary>
         /// IDで検索して保存されているデータを返す
         /// </summary>
         /// <param name="id"></param>

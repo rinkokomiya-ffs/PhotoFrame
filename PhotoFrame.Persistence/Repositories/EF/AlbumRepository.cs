@@ -24,13 +24,39 @@ namespace PhotoFrame.Persistence.EF
         public IEnumerable<Album> Find(Func<IQueryable<Album>, IQueryable<Album>> query)
         {
             // TODO: DBプログラミング講座で実装
-            throw new NotImplementedException();
+            if (FindAll() != null)
+                return query(FindAll());
+            else
+                return null;
         }
 
         public Album Find(Func<IQueryable<Album>, Album> query)
         {
             // TODO: DBプログラミング講座で実装
-            throw new NotImplementedException();
+            if (FindAll() != null)
+                return query(FindAll());
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// 全アルバムリストの生成
+        /// </summary>
+        /// <returns></returns>
+        private IQueryable<Album> FindAll()
+        {
+            List<Album> albums = new List<Album>();
+
+            using (Domain.Model.EF.PhotoRepositoryEntities entities = new Domain.Model.EF.PhotoRepositoryEntities())
+            {
+                var entries = entities.M_ALBUM.Select(e => e);
+                foreach(var p in entries)
+                {
+                    albums.Add(new Album(p.Id.ToString(), p.Name, p.Description));
+                }
+            }
+
+            return albums.AsQueryable();
         }
 
         public Album FindBy(string id)
