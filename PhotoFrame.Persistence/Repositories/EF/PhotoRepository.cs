@@ -12,6 +12,8 @@ namespace PhotoFrame.Persistence.EF
     /// </summary>
     class PhotoRepository : IPhotoRepository
     {
+        System.Data.Entity.SqlServer.SqlProviderServices instance = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
+
         //private Domain.Model.EF.PhotoRepositoryEntities entities;
         private IAlbumRepository albumRepository;
 
@@ -21,16 +23,12 @@ namespace PhotoFrame.Persistence.EF
         }
 
         public bool Exists(Photo entity)
-        {
-            // TODO: DBプログラミング講座で実装
-            throw new NotImplementedException();
-        }
+        => ExistsBy(entity.Id);
+
 
         public bool ExistsBy(string id)
-        {
-            // TODO: DBプログラミング講座で実装
-            throw new NotImplementedException();
-        }
+        => FindBy(id) != null;
+
 
         public IEnumerable<Photo> Find(Func<IQueryable<Photo>, IQueryable<Photo>> query)
         {
@@ -44,6 +42,11 @@ namespace PhotoFrame.Persistence.EF
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// IDで検索して保存されているデータを返す
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Photo FindBy(string id)
         {
             // TODO: DBプログラミング講座で実装
@@ -81,8 +84,7 @@ namespace PhotoFrame.Persistence.EF
             using (Domain.Model.EF.PhotoRepositoryEntities entities = new Domain.Model.EF.PhotoRepositoryEntities())
             {
                 // IDで検索して存在しない場合は新規保存してからReturnする
-                // 存在していた場合は何もせずにReturnする
-                if (FindBy(entity.Id) == null)
+                if (Exists(entity) == false)
                 {
                     Guid guid;
                     // データ定義
@@ -96,12 +98,23 @@ namespace PhotoFrame.Persistence.EF
 
                     // データ代入
                     entities.M_PHOTO.Add(productData);
-
-                    // 変更内容反映
-                    entities.SaveChanges();
                 }
-            }
+                // 存在していた場合は更新してからReturnする
+                else
+                {
+                    // 検索対象のデータを取得
+                    var targetData = entities.M_PHOTO.Find(Guid.Parse(entity.Id));
 
+                    // 更新する
+                    Guid guid;
+                    targetData.FilePath = entity.File.FilePath;
+                    targetData.IsFavorite = entity.IsFavorite;
+                    targetData.AlbumId = Guid.TryParse(entity.AlbumId, out guid) ? (Guid?)guid : null;
+                }
+
+                // 変更内容反映
+                entities.SaveChanges();
+            }
             return entity;
         }
 

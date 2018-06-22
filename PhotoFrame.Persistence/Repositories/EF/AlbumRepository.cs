@@ -12,17 +12,14 @@ namespace PhotoFrame.Persistence.EF
     /// </summary>
     class AlbumRepository : IAlbumRepository
     {
+        System.Data.Entity.SqlServer.SqlProviderServices instance = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
+
         public bool Exists(Album entity)
-        {
-            // TODO: DBプログラミング講座で実装
-            throw new NotImplementedException();
-        }
+        => ExistsBy(entity.Id);
 
         public bool ExistsBy(string id)
-        {
-            // TODO: DBプログラミング講座で実装
-            throw new NotImplementedException();
-        }
+        => FindBy(id) != null;
+
 
         public IEnumerable<Album> Find(Func<IQueryable<Album>, IQueryable<Album>> query)
         {
@@ -42,7 +39,7 @@ namespace PhotoFrame.Persistence.EF
             using (Domain.Model.EF.PhotoRepositoryEntities entities = new Domain.Model.EF.PhotoRepositoryEntities())
             {
                 // IDで検索
-                var targetData = entities.M_ALBUM.Find(id);
+                var targetData = entities.M_ALBUM.Find(Guid.Parse(id));
 
                 // 検索結果がある場合はAlbumを生成する
                 if (targetData != null)
@@ -69,8 +66,7 @@ namespace PhotoFrame.Persistence.EF
             using (Domain.Model.EF.PhotoRepositoryEntities entities = new Domain.Model.EF.PhotoRepositoryEntities())
             {
                 // IDで検索して存在しない場合は新規保存してからReturnする
-                // 存在していた場合は何もせずにReturnする
-                if (FindBy(entity.Id) != null)
+                if (FindBy(entity.Id) == null)
                 {
                     // データ定義
                     var productData = new Domain.Model.EF.M_ALBUM()
@@ -83,9 +79,21 @@ namespace PhotoFrame.Persistence.EF
                     // データ代入
                     entities.M_ALBUM.Add(productData);
 
-                    // 変更内容反映
-                    entities.SaveChanges();
+                    
                 }
+                // 存在していた場合は更新してからReturnする
+                else
+                {
+                    // 検索対象のデータを取得
+                    var targetData = entities.M_ALBUM.Find(Guid.Parse(entity.Id));
+
+                    // 更新する
+                    targetData.Name = entity.Name;
+                    targetData.Description = entity.Description ?? null;
+                }
+
+                // 変更内容反映
+                entities.SaveChanges();
             }
 
             return entity;
