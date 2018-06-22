@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PhotoRepositoryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="M_ALBUM">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="M_PHOTO">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FilePath" Type="nvarchar" MaxLength="260" Nullable="false" />
+          <Property Name="IsFavorite" Type="bit" Nullable="false" />
+          <Property Name="AlbumId" Type="uniqueidentifier" />
+        </EntityType>
+        <Association Name="FK_Photo_Album">
+          <End Role="M_ALBUM" Type="Self.M_ALBUM" Multiplicity="0..1" />
+          <End Role="M_PHOTO" Type="Self.M_PHOTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_ALBUM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="M_PHOTO">
+              <PropertyRef Name="AlbumId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PhotoRepositoryModelStoreContainer">
+          <EntitySet Name="M_ALBUM" EntityType="Self.M_ALBUM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="M_PHOTO" EntityType="Self.M_PHOTO" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Photo_Album" Association="Self.FK_Photo_Album">
+            <End Role="M_ALBUM" EntitySet="M_ALBUM" />
+            <End Role="M_PHOTO" EntitySet="M_PHOTO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PhotoRepositoryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="M_ALBUM">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="M_PHOTO" Relationship="Self.FK_Photo_Album" FromRole="M_ALBUM" ToRole="M_PHOTO" />
+        </EntityType>
+        <EntityType Name="M_PHOTO">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="FilePath" Type="String" MaxLength="260" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsFavorite" Type="Boolean" Nullable="false" />
+          <Property Name="AlbumId" Type="Guid" />
+          <NavigationProperty Name="M_ALBUM" Relationship="Self.FK_Photo_Album" FromRole="M_PHOTO" ToRole="M_ALBUM" />
+        </EntityType>
+        <Association Name="FK_Photo_Album">
+          <End Role="M_ALBUM" Type="Self.M_ALBUM" Multiplicity="0..1" />
+          <End Role="M_PHOTO" Type="Self.M_PHOTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="M_ALBUM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="M_PHOTO">
+              <PropertyRef Name="AlbumId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PhotoRepositoryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="M_ALBUM" EntityType="Self.M_ALBUM" />
+          <EntitySet Name="M_PHOTO" EntityType="Self.M_PHOTO" />
+          <AssociationSet Name="FK_Photo_Album" Association="Self.FK_Photo_Album">
+            <End Role="M_ALBUM" EntitySet="M_ALBUM" />
+            <End Role="M_PHOTO" EntitySet="M_PHOTO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PhotoRepositoryModelStoreContainer" CdmEntityContainer="PhotoRepositoryEntities">
+          <EntitySetMapping Name="M_ALBUM">
+            <EntityTypeMapping TypeName="PhotoRepositoryModel.M_ALBUM">
+              <MappingFragment StoreEntitySet="M_ALBUM">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_PHOTO">
+            <EntityTypeMapping TypeName="PhotoRepositoryModel.M_PHOTO">
+              <MappingFragment StoreEntitySet="M_PHOTO">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="IsFavorite" ColumnName="IsFavorite" />
+                <ScalarProperty Name="AlbumId" ColumnName="AlbumId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="なし" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
