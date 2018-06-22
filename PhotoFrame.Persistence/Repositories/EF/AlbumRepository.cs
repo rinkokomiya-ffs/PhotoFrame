@@ -39,13 +39,56 @@ namespace PhotoFrame.Persistence.EF
         public Album FindBy(string id)
         {
             // TODO: DBプログラミング講座で実装
-            throw new NotImplementedException();
+            using (Domain.Model.EF.PhotoRepositoryEntities entities = new Domain.Model.EF.PhotoRepositoryEntities())
+            {
+                // IDで検索
+                var targetData = entities.M_ALBUM.Find(id);
+
+                // 検索結果がある場合はAlbumを生成する
+                if (targetData != null)
+                {
+                    return new Album(targetData.Id.ToString(), targetData.Name, targetData.Description);
+                }
+                // 検索結果がない場合はnullを返す
+                else
+                {
+                    return null;
+                }
+            }
         }
 
+
+        /// <summary>
+        /// データベースに保存する
+        /// </summary>
+        /// <param name="entity">保存するアルバムデータ（Album）</param>
+        /// <returns>保存するアルバムデータ（Album）</returns>
         public Album Store(Album entity)
         {
             // TODO: DBプログラミング講座で実装
-            throw new NotImplementedException();
+            using (Domain.Model.EF.PhotoRepositoryEntities entities = new Domain.Model.EF.PhotoRepositoryEntities())
+            {
+                // IDで検索して存在しない場合は新規保存してからReturnする
+                // 存在していた場合は何もせずにReturnする
+                if (FindBy(entity.Id) != null)
+                {
+                    // データ定義
+                    var productData = new Domain.Model.EF.M_ALBUM()
+                    {
+                        Id = Guid.Parse(entity.Id),
+                        Name = entity.Name,
+                        Description = entity.Description,
+                    };
+
+                    // データ代入
+                    entities.M_ALBUM.Add(productData);
+
+                    // 変更内容反映
+                    entities.SaveChanges();
+                }
+            }
+
+            return entity;
         }
     }
 }

@@ -27,8 +27,8 @@ namespace PhotoFrame.Persistence.Test
 
             // テスト用データベースが存在していない場合は作りにいくが、
             // Transaction中ではテーブルを作成できないため、ここで作成させる
-            photoRepository.FindBy("dummy");
-            albumRepository.FindBy("dummy");
+            //photoRepository.FindBy("dummy");
+            //albumRepository.FindBy("dummy");
         }
 
         [TestInitialize]

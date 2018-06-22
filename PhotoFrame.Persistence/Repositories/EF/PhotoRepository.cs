@@ -12,6 +12,14 @@ namespace PhotoFrame.Persistence.EF
     /// </summary>
     class PhotoRepository : IPhotoRepository
     {
+        //private Domain.Model.EF.PhotoRepositoryEntities entities;
+        private IAlbumRepository albumRepository;
+
+        public PhotoRepository(IAlbumRepository albumRepository)
+        {
+            this.albumRepository = albumRepository;
+        }
+
         public bool Exists(Photo entity)
         {
             // TODO: DBプログラミング講座で実装
@@ -39,13 +47,62 @@ namespace PhotoFrame.Persistence.EF
         public Photo FindBy(string id)
         {
             // TODO: DBプログラミング講座で実装
-            throw new NotImplementedException();
+            using (Domain.Model.EF.PhotoRepositoryEntities entities = new Domain.Model.EF.PhotoRepositoryEntities())
+            {
+                // IDで検索
+                var targetData = entities.M_PHOTO.Find(Guid.Parse(id));
+
+                // 検索結果がある場合はPhotoを生成する
+                if (targetData != null)
+                {
+                    // Albumがある場合
+                    if (targetData.AlbumId != null)
+                    {
+                        return new Photo(targetData.Id.ToString(), new File(targetData.FilePath), targetData.IsFavorite, targetData.AlbumId.ToString(), albumRepository.FindBy(targetData.AlbumId.ToString()));
+
+                    }
+                    // ない場合
+                    else
+                    {
+                        return new Photo(targetData.Id.ToString(), new File(targetData.FilePath), targetData.IsFavorite);
+                    }
+                }
+                // 検索結果がない場合はnullを返す
+                else
+                {
+                    return null;
+                }
+            }
         }
 
         public Photo Store(Photo entity)
         {
             // TODO: DBプログラミング講座で実装
-            throw new NotImplementedException();
+            using (Domain.Model.EF.PhotoRepositoryEntities entities = new Domain.Model.EF.PhotoRepositoryEntities())
+            {
+                // IDで検索して存在しない場合は新規保存してからReturnする
+                // 存在していた場合は何もせずにReturnする
+                if (FindBy(entity.Id) == null)
+                {
+                    Guid guid;
+                    // データ定義
+                    var productData = new Domain.Model.EF.M_PHOTO()
+                    {
+                        Id = Guid.Parse(entity.Id),
+                        FilePath = entity.File.FilePath,
+                        IsFavorite = entity.IsFavorite,
+                        AlbumId = Guid.TryParse(entity.AlbumId, out guid) ? (Guid?)guid : null,
+                    };
+
+                    // データ代入
+                    entities.M_PHOTO.Add(productData);
+
+                    // 変更内容反映
+                    entities.SaveChanges();
+                }
+            }
+
+            return entity;
         }
 
         public void StoreIfNotExists(IEnumerable<Photo> photos)

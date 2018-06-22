@@ -18,7 +18,7 @@ namespace PhotoFrame.Persistence
     {
         // ストア名称
         //   App.config（アプリケーション構成ファイル）に定義した文字列を引く
-        private static readonly string DatabaseName = ConfigurationManager.AppSettings["DatabaseName"];
+        private static readonly string DatabaseName = ConfigurationManager.AppSettings["PhotoRepositoryEntities"];
 
         private readonly Type type;
 
@@ -37,7 +37,7 @@ namespace PhotoFrame.Persistence
                 case Type.EF:
                     // TODO: EFに適した生成に変更してください
                     AlbumRepository = new EF.AlbumRepository(/* DatabaseName */);
-                    PhotoRepository = new EF.PhotoRepository(/* DatabaseName */);
+                    PhotoRepository = new EF.PhotoRepository(AlbumRepository);
                     break;
                 default:
                     throw new ArgumentException("The specified type is not supported.");
