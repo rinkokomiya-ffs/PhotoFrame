@@ -19,7 +19,9 @@ namespace PhotoFrameForm
 {
     public partial class MainFrame : Form
     {
-        static RepositoryFactory repos = new RepositoryFactory(PhotoFrame.Persistence.Type.Csv);
+        //static RepositoryFactory repos = new RepositoryFactory(PhotoFrame.Persistence.Type.Csv);
+        static RepositoryFactory repos = new RepositoryFactory(PhotoFrame.Persistence.Type.EF);
+
 
         // アプリケーションのインスタンス化
         PhotoFrameApplication application = new PhotoFrameApplication(repos.AlbumRepository, repos.PhotoRepository);
@@ -72,7 +74,11 @@ namespace PhotoFrameForm
                 ChoiceAlbumComboBox.Items.Add(p.Name);
             }
 
-            ChoiceAlbumComboBox.SelectedIndex = 0;
+            // 一つでもアルバムが存在したら初期状態で選択する
+            if(allAlbumList.Count() != 0)
+            {
+                ChoiceAlbumComboBox.SelectedIndex = 0;
+            }
         }
 
         /// <summary>

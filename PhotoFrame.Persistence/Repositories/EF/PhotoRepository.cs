@@ -33,13 +33,19 @@ namespace PhotoFrame.Persistence.EF
         public IEnumerable<Photo> Find(Func<IQueryable<Photo>, IQueryable<Photo>> query)
         {
             // TODO: DBプログラミング講座で実装
-            throw new NotImplementedException();
+            if (FindAll() != null)
+                return query(FindAll());
+            else
+                return null;
         }
 
         public Photo Find(Func<IQueryable<Photo>, Photo> query)
         {
             // TODO: DBプログラミング講座で実装
-            throw new NotImplementedException();
+            if (FindAll() != null)
+                return query(FindAll());
+            else
+                return null;
         }
 
         /// <summary>
