@@ -20,8 +20,14 @@ namespace PhotoFrame.Application
         // フォルダから画像ファイル検索
         private readonly FindDirectory findDirectory;
 
-        // アルバムの検索
+        // アルバムの検索（リスト表示）
         private readonly FindAlbums findAlbums;
+
+        // アルバム名から既にそのアルバムに登録されているフォトの検索
+        private readonly FindPhotos findPhotos;
+
+        // 所属アルバムの登録もしくは変更
+        private readonly ChangeAlbum changeAlbum;
 
 
         public PhotoFrameApplication(IAlbumRepository albumRepository, IPhotoRepository photoRepository)
@@ -29,7 +35,8 @@ namespace PhotoFrame.Application
             this.createAlbum = new CreateAlbum(albumRepository);
             this.findDirectory = new FindDirectory(albumRepository, photoRepository);
             this.findAlbums = new FindAlbums(albumRepository);
-            //FindPhoto findPhoto = new FindPhoto(repo.PhotoRepository);
+            this.findPhotos = new FindPhotos(photoRepository);
+            this.changeAlbum = new ChangeAlbum(albumRepository, photoRepository);
         }
 
         public Task CreateAlbum(string albumTitle)
@@ -51,6 +58,14 @@ namespace PhotoFrame.Application
             ///return findAlbum.Execute(albumTitle); 
         }
 
-        
+        public IEnumerable<Photo> FindPhotos(string albumTitle)
+        {
+            return findPhotos.Execute(albumTitle);
+        }
+
+        public Photo ChangeAlbum(string photoTitle, string albumTitle)
+        {
+            return changeAlbum.Execute(photoTitle, albumTitle);
+        }
     }
 }

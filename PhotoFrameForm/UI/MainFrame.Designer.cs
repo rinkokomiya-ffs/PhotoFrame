@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.ShowAlbumPhotoFileListButton = new System.Windows.Forms.Button();
-            this.ChoiceAlbumComboBox = new System.Windows.Forms.ComboBox();
+            this.ChangeAlbumComboBox = new System.Windows.Forms.ComboBox();
             this.PhotoFileListView = new System.Windows.Forms.ListView();
             this.PhotoFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.AlbumName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -41,7 +41,6 @@
             this.TargetAlbumNameTextBox = new System.Windows.Forms.TextBox();
             this.CreateAlbumButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
-            this.SearchAlbumTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -51,6 +50,7 @@
             this.ShowDirectoryFileListButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.SearchDirectorytextBox = new System.Windows.Forms.TextBox();
+            this.SearchAlbumComboBox = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -67,7 +67,7 @@
             // 
             // ShowAlbumPhotoFileListButton
             // 
-            this.ShowAlbumPhotoFileListButton.Location = new System.Drawing.Point(336, 36);
+            this.ShowAlbumPhotoFileListButton.Location = new System.Drawing.Point(333, 36);
             this.ShowAlbumPhotoFileListButton.Name = "ShowAlbumPhotoFileListButton";
             this.ShowAlbumPhotoFileListButton.Size = new System.Drawing.Size(75, 23);
             this.ShowAlbumPhotoFileListButton.TabIndex = 2;
@@ -75,13 +75,13 @@
             this.ShowAlbumPhotoFileListButton.UseVisualStyleBackColor = true;
             this.ShowAlbumPhotoFileListButton.Click += new System.EventHandler(this.ShowPhotoFileListButton_Click);
             // 
-            // ChoiceAlbumComboBox
+            // ChangeAlbumComboBox
             // 
-            this.ChoiceAlbumComboBox.FormattingEnabled = true;
-            this.ChoiceAlbumComboBox.Location = new System.Drawing.Point(112, 3);
-            this.ChoiceAlbumComboBox.Name = "ChoiceAlbumComboBox";
-            this.ChoiceAlbumComboBox.Size = new System.Drawing.Size(219, 20);
-            this.ChoiceAlbumComboBox.TabIndex = 3;
+            this.ChangeAlbumComboBox.FormattingEnabled = true;
+            this.ChangeAlbumComboBox.Location = new System.Drawing.Point(103, 3);
+            this.ChangeAlbumComboBox.Name = "ChangeAlbumComboBox";
+            this.ChangeAlbumComboBox.Size = new System.Drawing.Size(219, 20);
+            this.ChangeAlbumComboBox.TabIndex = 3;
             // 
             // PhotoFileListView
             // 
@@ -122,9 +122,9 @@
             // 
             // ChangeAlbumButton
             // 
-            this.ChangeAlbumButton.Location = new System.Drawing.Point(355, 21);
+            this.ChangeAlbumButton.Location = new System.Drawing.Point(338, 21);
             this.ChangeAlbumButton.Name = "ChangeAlbumButton";
-            this.ChangeAlbumButton.Size = new System.Drawing.Size(88, 23);
+            this.ChangeAlbumButton.Size = new System.Drawing.Size(79, 23);
             this.ChangeAlbumButton.TabIndex = 6;
             this.ChangeAlbumButton.Text = "アルバム変更";
             this.ChangeAlbumButton.UseVisualStyleBackColor = true;
@@ -132,7 +132,7 @@
             // 
             // RegisterFavButton
             // 
-            this.RegisterFavButton.Location = new System.Drawing.Point(112, 41);
+            this.RegisterFavButton.Location = new System.Drawing.Point(103, 41);
             this.RegisterFavButton.Name = "RegisterFavButton";
             this.RegisterFavButton.Size = new System.Drawing.Size(88, 23);
             this.RegisterFavButton.TabIndex = 7;
@@ -141,14 +141,14 @@
             // 
             // TargetAlbumNameTextBox
             // 
-            this.TargetAlbumNameTextBox.Location = new System.Drawing.Point(106, 69);
+            this.TargetAlbumNameTextBox.Location = new System.Drawing.Point(105, 69);
             this.TargetAlbumNameTextBox.Name = "TargetAlbumNameTextBox";
-            this.TargetAlbumNameTextBox.Size = new System.Drawing.Size(224, 19);
+            this.TargetAlbumNameTextBox.Size = new System.Drawing.Size(222, 19);
             this.TargetAlbumNameTextBox.TabIndex = 8;
             // 
             // CreateAlbumButton
             // 
-            this.CreateAlbumButton.Location = new System.Drawing.Point(336, 69);
+            this.CreateAlbumButton.Location = new System.Drawing.Point(333, 69);
             this.CreateAlbumButton.Name = "CreateAlbumButton";
             this.CreateAlbumButton.Size = new System.Drawing.Size(79, 23);
             this.CreateAlbumButton.TabIndex = 9;
@@ -165,13 +165,6 @@
             this.CancelButton.Text = "処理キャンセル";
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
-            // 
-            // SearchAlbumTextBox
-            // 
-            this.SearchAlbumTextBox.Location = new System.Drawing.Point(106, 36);
-            this.SearchAlbumTextBox.Name = "SearchAlbumTextBox";
-            this.SearchAlbumTextBox.Size = new System.Drawing.Size(224, 19);
-            this.SearchAlbumTextBox.TabIndex = 11;
             // 
             // label2
             // 
@@ -194,10 +187,10 @@
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 32.06997F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67.93003F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.67485F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 69.32516F));
             this.tableLayoutPanel2.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.ChoiceAlbumComboBox, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.ChangeAlbumComboBox, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.label5, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.RegisterFavButton, 1, 1);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 18);
@@ -205,7 +198,8 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(343, 76);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(326, 76);
             this.tableLayoutPanel2.TabIndex = 15;
             // 
             // label5
@@ -233,7 +227,8 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.04478F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 68.95522F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 159F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 162F));
+            this.tableLayoutPanel1.Controls.Add(this.SearchAlbumComboBox, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.ShowDirectoryFileListButton, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.CreateAlbumButton, 2, 2);
@@ -242,7 +237,6 @@
             this.tableLayoutPanel1.Controls.Add(this.TargetAlbumNameTextBox, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.SearchDirectorytextBox, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.SearchAlbumTextBox, 1, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(30, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
@@ -254,7 +248,7 @@
             // 
             // ShowDirectoryFileListButton
             // 
-            this.ShowDirectoryFileListButton.Location = new System.Drawing.Point(336, 3);
+            this.ShowDirectoryFileListButton.Location = new System.Drawing.Point(333, 3);
             this.ShowDirectoryFileListButton.Name = "ShowDirectoryFileListButton";
             this.ShowDirectoryFileListButton.Size = new System.Drawing.Size(75, 23);
             this.ShowDirectoryFileListButton.TabIndex = 15;
@@ -273,11 +267,19 @@
             // 
             // SearchDirectorytextBox
             // 
-            this.SearchDirectorytextBox.Location = new System.Drawing.Point(106, 3);
+            this.SearchDirectorytextBox.Location = new System.Drawing.Point(105, 3);
             this.SearchDirectorytextBox.Name = "SearchDirectorytextBox";
-            this.SearchDirectorytextBox.Size = new System.Drawing.Size(224, 19);
+            this.SearchDirectorytextBox.Size = new System.Drawing.Size(222, 19);
             this.SearchDirectorytextBox.TabIndex = 14;
             this.SearchDirectorytextBox.Text = "だみーだよ";
+            // 
+            // SearchAlbumComboBox
+            // 
+            this.SearchAlbumComboBox.FormattingEnabled = true;
+            this.SearchAlbumComboBox.Location = new System.Drawing.Point(105, 36);
+            this.SearchAlbumComboBox.Name = "SearchAlbumComboBox";
+            this.SearchAlbumComboBox.Size = new System.Drawing.Size(219, 20);
+            this.SearchAlbumComboBox.TabIndex = 16;
             // 
             // MainFrame
             // 
@@ -304,7 +306,7 @@
         #endregion
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button ShowAlbumPhotoFileListButton;
-        private System.Windows.Forms.ComboBox ChoiceAlbumComboBox;
+        private System.Windows.Forms.ComboBox ChangeAlbumComboBox;
         private System.Windows.Forms.ListView PhotoFileListView;
         private System.Windows.Forms.Button SlideShowButton;
         private System.Windows.Forms.Button ChangeAlbumButton;
@@ -315,7 +317,6 @@
         private System.Windows.Forms.TextBox TargetAlbumNameTextBox;
         private System.Windows.Forms.Button CreateAlbumButton;
         private System.Windows.Forms.Button CancelButton;
-        private System.Windows.Forms.TextBox SearchAlbumTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
@@ -325,6 +326,7 @@
         private System.Windows.Forms.Button ShowDirectoryFileListButton;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox SearchDirectorytextBox;
+        private System.Windows.Forms.ComboBox SearchAlbumComboBox;
     }
 }
 

@@ -30,17 +30,9 @@ namespace PhotoFrame.Persistence.Csv
             //}
         }
 
-        public bool Exists(Photo entity)
-        {
-            // TODO: ファイルIO講座以降で実装可能
-            throw new NotImplementedException();
-        }
+        public bool Exists(Photo entity) => ExistsBy(entity.Id);
 
-        public bool ExistsBy(string id)
-        {
-            // TODO: ファイルIO講座以降で実装可能
-            throw new NotImplementedException();
-        }
+        public bool ExistsBy(string id) => FindBy(id) != null;
 
         public IEnumerable<Photo> Find(Func<IQueryable<Photo>, IQueryable<Photo>> query)
         {

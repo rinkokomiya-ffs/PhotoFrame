@@ -17,14 +17,14 @@ namespace PhotoFrame.Domain.UseCase
             this.repository = repository;
         }
 
-        public IEnumerable<Album> Execute(string AlbumName)
+        public IEnumerable<Album> Execute(string albumTitle)
         //public async Task<IEnumerable<Album>> Execute(string AlbumName)
         {
             // アルバムリスト生成
             List<Album> albums = new List<Album>();
 
             // 対象が全アルバムの場合
-            if(AlbumName == "allAlbum")
+            if(albumTitle == "allAlbum")
             {
                 Func<IQueryable<Album>, IQueryable<Album>> func = allAlbums => (allAlbums ?? null);
                 //await Task.Run(() =>
@@ -41,7 +41,7 @@ namespace PhotoFrame.Domain.UseCase
                     List<Album> tmpAlbums = new List<Album>();
                     foreach (var p in allAlbums)
                     {
-                        if(p.Name.Contains(AlbumName))
+                        if(p.Name.Contains(albumTitle))
                         {
                             albums.Add(p);
                         }

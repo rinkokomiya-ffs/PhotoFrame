@@ -79,8 +79,9 @@ namespace PhotoFrame.Persistence.EF
             // TODO: DBプログラミング講座で実装
             using (Domain.Model.EF.PhotoRepositoryEntities entities = new Domain.Model.EF.PhotoRepositoryEntities())
             {
-                // IDで検索
-                var targetData = entities.M_PHOTO.Find(Guid.Parse(id));
+                 // IDで検索
+                Guid guid;
+                var targetData = entities.M_PHOTO.Find(Guid.TryParse(id, out guid) ? (Guid?)guid : null);
 
                 // 検索結果がある場合はPhotoを生成する
                 if (targetData != null)

@@ -16,14 +16,28 @@ namespace PhotoFrame.Domain.UseCase
             this.repository = repository;
         }
 
-        public Photo Execute(Func<IQueryable<Photo>, Photo> query)
+        public IEnumerable<Photo> Execute(string albumTitle)
         {
-            return repository.Find(query);
-        }
+            // フォトリスト生成
+            List<Photo> photos = new List<Photo>();
 
-        public IEnumerable<Photo> Execute(Func<IQueryable<Photo>, IQueryable<Photo>> query)
-        {
-            return repository.Find(query);
+            Func<IQueryable<Photo>, IQueryable<Photo>> func = allPhotos =>
+            {
+                List<Photo> tmpPhotos = new List<Photo>();
+                foreach (var p in allPhotos)
+                {
+                    if (p.Album?.Name == albumTitle)
+                    {
+                        tmpPhotos.Add(p);
+                    }
+                };
+                return tmpPhotos.AsQueryable();
+            };
+
+            //await Task.Run(() =>
+            //{
+            return repository.Find(func).ToList();
+            //});
         }
     }
 }

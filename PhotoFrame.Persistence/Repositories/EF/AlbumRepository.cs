@@ -65,7 +65,8 @@ namespace PhotoFrame.Persistence.EF
             using (Domain.Model.EF.PhotoRepositoryEntities entities = new Domain.Model.EF.PhotoRepositoryEntities())
             {
                 // IDで検索
-                var targetData = entities.M_ALBUM.Find(Guid.Parse(id));
+                Guid guid;
+                var targetData = entities.M_ALBUM.Find(Guid.TryParse(id, out guid) ? (Guid?)guid : null);
 
                 // 検索結果がある場合はAlbumを生成する
                 if (targetData != null)
